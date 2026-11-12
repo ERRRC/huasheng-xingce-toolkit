@@ -1,40 +1,39 @@
-# 花生十三行测工具箱 Skill
+# 花生十三行测方法库 Skill
 
-将 [heihei999/huasheng-mcp](https://github.com/heihei999/huasheng-mcp) 的本地知识库与工具函数改造为可直接使用的 Agent Skill，无需启动 MCP 服务。
+**纯 Markdown 版，无需 Python、MCP 服务或额外程序依赖。**
 
-## 功能
+将 [heihei999/huasheng-mcp](https://github.com/heihei999/huasheng-mcp) 的知识库转换成可按题型查阅的 Agent Skill。AI 通过索引阅读方法卡，再结合题干完成推理与答案核验。
 
-- 442 张方法卡片，涵盖资料分析、数量关系、判断推理、言语理解。
-- 保留 15 项工具函数：方法检索、卡片读取、出处查询、题型分类与路由、解题草案及模块框架。
-- 知识库随包携带，运行时无需访问原仓库或联网。
+## 内容
 
-## 安装到 Codex
+- 442 张独立方法卡，保留原卡全部字段，包括公式、适用与不适用条件、步骤、易错点、来源页码和待复核标记。
+- 10 份模块索引，覆盖资料分析、数量关系、判断推理、言语理解。
+- 6 份详细题型框架，按需阅读。
 
-需要 Python 3.10 或更高版本。将本仓库克隆到 `~/.codex/skills/huasheng-xingce-toolkit`（若设置了 CODEX_HOME，则放到对应 skills 目录）。Windows 默认目录为 `%USERPROFILE%\.codex\skills\huasheng-xingce-toolkit`。已有同名目录时先备份，避免覆盖本地修改。
+入口为 [SKILL.md](SKILL.md)，全部方法可从[总索引](references/index.md)查阅。
 
-新开聊天后说：**用 huasheng-xingce-toolkit 帮我解这道题。**
+## 安装
 
-## 直接运行
+宿主 AI 需要支持加载 skill，并能读取随附的 Markdown 文件。仅把 SKILL.md 的文字粘贴到普通聊天里，无法让 AI 自动读取整套方法库；使用其他平台时，请按该平台的技能或文件导入方式加载整个文件夹。
 
-在仓库目录下：
+Codex 用户可下载本仓库 ZIP，解压后将整个文件夹重命名为 `huasheng-xingce-toolkit`，放到 `~/.codex/skills/`。Windows 默认位置为 `%USERPROFILE%\.codex\skills\huasheng-xingce-toolkit`。设置了 CODEX_HOME 时使用对应的 skills 目录。确认 SKILL.md 直接位于该文件夹中，不要额外嵌套一层目录。
 
-```powershell
-py -3 scripts/run.py list
-py -3 scripts/run.py search_methods --input params.json
-```
+若已有旧版，先备份旧文件夹，再放入新版。新开聊天后使用：
 
-其他平台可将 `py -3` 替换为 `python3`。params.json 使用 UTF-8 编码，例如：
+> 用 huasheng-xingce-toolkit 帮我解这道题：……
 
-```json
-{"query":"比重 增长率","top_k":5}
-```
+也可以问：
 
-更多工作流程见 [SKILL.md](SKILL.md)。参数以 list 输出为准，不需要安装 MCP 或启动服务器。
+> 用花生十三方法库讲讲基期比重和两期比重变化的区别，并给出方法来源。
 
-## 验证与限制
+## 使用方式与限制
 
-已完成 skill 格式校验及全部 15 项函数的基础调用检查，确认 442 张方法卡片与来源版本逐字节一致。基础检查不代表每个题型、每道题的答案都经过正确性验证。路由使用启发式，解题输出可能只是草案，需结合题目核验。
+AI 先选择模块索引，再打开相关的少量方法卡，完成推理并核对选项。日常使用只需阅读文档，不需要运行命令。
+
+此版以文档流程替代旧版的 15 项程序工具，方法检索、题型判断、计算及答案核验由宿主 AI 完成。它不提供原程序的自动计算接口，也不保证每题正确。图片题需要宿主具备视觉能力；知识卡中的置信度与历史审计记录不代表本题答案准确率。
 
 ## 来源与授权
 
-原项目：heihei999/huasheng-mcp；本次转换依据本地副本，项目元数据版本为 0.7.0。保留原知识库与 Python 核心代码，新增 SKILL.md 与无服务调用入口 scripts/run.py。原项目使用 MIT License，版权与许可文本完整保留于 [LICENSE](LICENSE)。本项目不是花生十三官方产品。
+来源：heihei999/huasheng-mcp 本地副本，项目元数据版本为 0.7.0。442 张方法卡由原 all_cards.jsonl 转换；文档化时保留全部原字段。6 份框架由原项目的静态框架函数输出转换而来。原始 Python 版本保留在本仓库 Git 历史中。
+
+遵循原项目 MIT License，版权与许可文本保留于 [LICENSE](LICENSE)。本项目不是花生十三官方产品。
